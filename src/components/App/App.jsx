@@ -45,6 +45,25 @@ export class App extends Component {
     );
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentDidMount() {
+    const parse = JSON.parse(localStorage.getItem('contacts'));
+    if (parse && parse.length > 0) {
+      this.setState({
+        contacts: parse,
+      });
+    } else {
+      this.setState({
+        users: initialPhoneBook,
+      });
+    }
+  }
+
   render() {
     const visibleContacts = this.getVisibleContacts();
     return (
